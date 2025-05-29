@@ -1,0 +1,44 @@
+service: labs-pep-auth
+
+plugins:
+  - serverless-better-credentials
+package:
+  individually: true
+
+provider:
+  name: aws
+  runtime: provided.al2
+  region: us-east-1
+  tags:
+    "app":	"jaip-auth-lambda"
+    "ithaka/app":	"auth-lambda"
+    "ithaka/business.unit":	"labs"
+    "ithaka/environment":	${file(./secrets.yml):environment}
+    "ithaka/owner":	"jaip"
+  vpc:
+    subnetIds:
+      - ${file(./secrets.yml):subnet1}
+      - ${file(./secrets.yml):subnet2}
+      - ${file(./secrets.yml):subnet3}
+      - ${file(./secrets.yml):subnet4}
+    securityGroupIds:
+      - ${file(./secrets.yml):sgid}
+  iam:
+    role: ${file(./secrets.yml):roleArn}
+  lambdaHashingVersion: 20201221
+  deploymentBucket:
+    name: ithaka-labs-backup
+  endpointType: REGIONAL
+
+functions:
+  proxy:
+    description: An authentication processor for the Prison Education Initiative
+    handler: api
+    memorySize: 128
+    package:
+      artifact: bin/api.zip
+    events:
+    - http:
+        path: /
+        method: get
+          
