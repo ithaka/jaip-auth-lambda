@@ -1,7 +1,5 @@
 service: labs-pep-auth
 
-plugins:
-  - serverless-better-credentials
 package:
   individually: true
 
