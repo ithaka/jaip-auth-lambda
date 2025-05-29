@@ -16,8 +16,6 @@ func init() {
 }
 
 func AuthJSTORHandler(w http.ResponseWriter, r *http.Request) {
-	// Get the logger from the request context
-	// This'll be set to the real IP address of the client.
 	log.Printf("Starting Auth Handler: %s", r.Host)
 	
 	for _, value := range r.Cookies() {
